@@ -1,8 +1,3 @@
-// Java program for the above approach
-import java.io.*;
-import java.lang.*;
-import java.util.*;
- 
 class HamiltonianDP{
  
     // Function to check whether there
