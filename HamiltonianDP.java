@@ -1,4 +1,33 @@
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.Arrays;
+import java.util.List;
+
 class HamiltonianDP{
+    // Driver Code
+    public static void main(String[] args)
+    {
+        int adj[][] = readFile("adjacency_matrix_20.txt");
+        int N = adj.length;
+    
+        long startTime = System.nanoTime();
+        double startMemory = (Runtime.getRuntime().totalMemory() -  Runtime.getRuntime().freeMemory());
+
+        if (Hamiltonian_path(adj, N))
+            System.out.println("YES");
+        else
+            System.out.println("NO");
+        
+        double endMemory = (Runtime.getRuntime().totalMemory() -  Runtime.getRuntime().freeMemory());
+        long endTime   = System.nanoTime();
+        long totalTime = endTime - startTime;
+
+        System.out.println("Total Running Time: " + totalTime);
+        System.out.println("Total memory : " + (endMemory - startMemory));
+        Runtime.getRuntime().gc();
+    }
+
  
     // Function to check whether there
     // exists a Hamiltonian Path or not
@@ -57,20 +86,29 @@ class HamiltonianDP{
         return false;
     }
     
-    // Driver Code
-    public static void main(String[] args)
-    {
-        int adj[][] = { { 0, 1, 1, 1, 0 },
-                        { 1, 0, 1, 0, 1 },
-                        { 1, 1, 0, 1, 1 },
-                        { 1, 0, 1, 0, 0 } };
-        int N = adj.length;
-    
-        // Function Call
-        if (Hamiltonian_path(adj, N))
-            System.out.println("YES");
-        else
-            System.out.println("NO");
+    private static int[][] readFile(String filePath) {
+        List<String> lines;
+        int[][] adjacencyMatrix = null;
+
+        try {
+            lines = Files.readAllLines(Paths.get(filePath));
+
+            int numRows = lines.size();
+            int numCols = lines.get(0).split("\\s*,\\s*").length;
+            adjacencyMatrix = new int[numRows][numCols];
+
+            for (int i = 0; i < numRows; i++) {
+                String[] values = lines.get(i).split("\\s*,\\s*");
+                for (int j = 0; j < numCols; j++) {
+                    adjacencyMatrix[i][j] = Integer.parseInt(values[j].replaceAll("[^0-9]", ""));
+                }
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return adjacencyMatrix;
     }
 }
  

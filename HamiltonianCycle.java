@@ -1,9 +1,38 @@
 /* Java program for solution of Hamiltonian Cycle problem
    using backtracking */
-   class HamiltonianBacktracking
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.List;
+
+class HamiltonianBacktracking
    {
-       final int V = 5;
+       final int V = 20;
        int path[];
+
+       // driver program to test above function
+       public static void main(String args[])
+       {
+            int graph[][] = readFile("graph_20.txt");
+
+            
+            HamiltonianBacktracking hamiltonian =
+                                   new HamiltonianBacktracking();
+   
+            long startTime = System.nanoTime();
+            double startMemory = (Runtime.getRuntime().totalMemory() -  Runtime.getRuntime().freeMemory());
+
+            hamiltonian.hamCycle(graph);
+
+            double endMemory = (Runtime.getRuntime().totalMemory() -  Runtime.getRuntime().freeMemory());
+            long endTime   = System.nanoTime();
+            long totalTime = endTime - startTime;
+
+            System.out.println("Total Running Time: " + totalTime);
+            System.out.println("Total memory : " + (endMemory - startMemory));
+            Runtime.getRuntime().gc();
+       }
    
        /* A utility function to check if the vertex v can be
           added at index 'pos'in the Hamiltonian Cycle
@@ -106,43 +135,30 @@
            // complete cycle
            System.out.println(" " + path[0] + " ");
        }
-   
-       // driver program to test above function
-       public static void main(String args[])
-       {
-           HamiltonianBacktracking hamiltonian =
-                                   new HamiltonianBacktracking();
-           /* Let us create the following graph
-              (0)--(1)--(2)
-               |   / \   |
-               |  /   \  |
-               | /     \ |
-              (3)-------(4)    */
-           int graph1[][] = {{0, 1, 0, 1, 0},
-               {1, 0, 1, 1, 1},
-               {0, 1, 0, 0, 1},
-               {1, 1, 0, 0, 1},
-               {0, 1, 1, 1, 0},
-           };
-   
-           // Print the solution
-           hamiltonian.hamCycle(graph1);
-   
-           /* Let us create the following graph
-              (0)--(1)--(2)
-               |   / \   |
-               |  /   \  |
-               | /     \ |
-              (3)       (4)    */
-           int graph2[][] = {{0, 1, 0, 1, 0},
-               {1, 0, 1, 1, 1},
-               {0, 1, 0, 0, 1},
-               {1, 1, 0, 0, 0},
-               {0, 1, 1, 0, 0},
-           };
-   
-           // Print the solution
-           hamiltonian.hamCycle(graph2);
-       }
+
+    private static int[][] readFile(String filePath) {
+        List<String> lines;
+        int[][] adjacencyMatrix = null;
+
+        try {
+            lines = Files.readAllLines(Paths.get(filePath));
+
+            int numRows = lines.size();
+            int numCols = lines.get(0).split("\\s*,\\s*").length;
+            adjacencyMatrix = new int[numRows][numCols];
+
+            for (int i = 0; i < numRows; i++) {
+                String[] values = lines.get(i).split("\\s*,\\s*");
+                for (int j = 0; j < numCols; j++) {
+                    adjacencyMatrix[i][j] = Integer.parseInt(values[j].replaceAll("[^0-9]", ""));
+                }
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return adjacencyMatrix;
+    }
    }
    // This code is contributed by Abhishek Shankhadhar
