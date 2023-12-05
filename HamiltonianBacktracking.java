@@ -14,6 +14,7 @@ public class HamiltonianBacktracking
        // driver program to test above function
        public static void main(String args[])
        {
+
             int graph[][] = readFile("graph_20.txt");
 
             long startTime = System.nanoTime();
@@ -67,7 +68,7 @@ public class HamiltonianBacktracking
            // Try different vertices as a next candidate in
            // Hamiltonian Path. We don't try for 0 as we
            // included 0 as starting point in hamPath()
-           for (int v = 1; v < V; v++)
+           for (int v = 0; v < V; v++)
            {
                /* Check if this vertex can be added to Hamiltonian
                   Path */
@@ -98,23 +99,23 @@ public class HamiltonianBacktracking
           this function prints one of the feasible solutions. */
        int hamPath(int graph[][])
        {
-           path = new int[V];
-           for (int i = 0; i < V; i++)
-               path[i] = -1;
-   
-           /* Let us put vertex 0 as the first vertex in the path.
-              If there is a Hamiltonian Path, then the path can be
-              started from any point of the Path as the graph is
-              undirected */
-           path[0] = 0;
-           if (hamPathUtil(graph, path, 1) == false)
-           {
-               System.out.println("\nSolution does not exist");
-               return 0;
-           }
-   
-           printSolution(path);
-           return 1;
+            for (int i = 0; i < V; i++) {
+                path = new int[V];
+
+                for (int j = 0; j < V; j++)
+                    path[i] = -1;
+
+                path[0] = i;
+                if (hamPathUtil(graph, path, 1) == false)
+                {
+                    System.out.println("\nSolution does not exist");
+                } else {
+                    printSolution(path);
+                    return 1;
+                }
+            }
+
+            return 0;
        }
    
        /* A utility function to print solution */
